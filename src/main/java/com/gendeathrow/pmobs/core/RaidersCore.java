@@ -1,10 +1,14 @@
 package com.gendeathrow.pmobs.core;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.init.Biomes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.common.DungeonHooks;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -17,16 +21,19 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.gendeathrow.pmobs.client.RaidersSkinManager;
 import com.gendeathrow.pmobs.commands.common.CommonCommands;
+import com.gendeathrow.pmobs.common.SoundEvents;
 import com.gendeathrow.pmobs.core.proxies.CommonProxy;
 import com.gendeathrow.pmobs.entity.EntityPlayerRaider;
+import com.gendeathrow.pmobs.entity.New.EntityRaiderBase;
 
 @Mod(modid = RaidersCore.MODID, name=RaidersCore.NAME, version = RaidersCore.VERSION)
 public class RaidersCore
 {
     public static final String MODID = "playerraiders";
     public static final String NAME = "Player Raiders";
-    public static final String VERSION = "1.2.12";
+    public static final String VERSION = "1.2.14.29";
     
 	@Instance(MODID)
 	public static RaidersCore instance;
@@ -38,29 +45,48 @@ public class RaidersCore
 	@SidedProxy(clientSide = PROXY + ".ClientProxy", serverSide = PROXY + ".CommonProxy")
 	public static CommonProxy proxy;
 
-
     @EventHandler
     public void preinit(FMLPreInitializationEvent event)
     {
 		logger = event.getModLog();
 		
-    	EntityRegistry.registerModEntity(EntityPlayerRaider.class, "Raiders", 1, this, 80, 3, true);
-    	
-     	EntityRegistry.registerEgg(EntityPlayerRaider.class, -3971048, -6191748);
+    	EntityRegistry.registerModEntity(EntityPlayerRaider.class, "Raiders", 1, this, 80, 3, true, -3971048, -6191748);
      	
      	ConfigHandler.preInit();
     	
     	proxy.preInit(event);
      }
     
+    public static ResourceLocation playerraidersloot = new ResourceLocation(MODID, "entities/playerraiders");
+    
+    public static final EnumCreatureType RaidersDayTime = EnumHelper.addCreatureType("raiderDayTime", EntityRaiderBase.class, 30, Material.GROUND, false, false);
+    
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
     	proxy.Init(event);
     	
+    	proxy.registerHandlers();
+    	
     	ConfigHandler.load();
     	
+		SoundEvents.register();
+		
+		LootTableList.register(playerraidersloot);
+		
+    	Biome[] biomes = new Biome[0];
     	
+    	for(Biome biomeEntry : Biome.REGISTRY)
+    	{
+    		biomes = ArrayUtils.add(biomes,biomeEntry);
+    	}
+       	
+    	RaidersCore.logger.info("Added "+ biomes.length +" biomes to Raiders spawn list.");
+    
+    	EntityRegistry.addSpawn(EntityPlayerRaider.class, PMSettings.NightSpawnWeight, 1, PMSettings.nightMaxGroupSpawn,EnumCreatureType.MONSTER, biomes);
+    	
+    	
+
     }
     
     @EventHandler
@@ -68,78 +94,19 @@ public class RaidersCore
     {
     	proxy.postInit(event);
     	
-    	
     	ConfigHandler.PostLoad();
 
-    	
-    	Biome[] biomes = new Biome[0];
-
-    	biomes = ArrayUtils.add(biomes, Biomes.BEACH);
-    	biomes = ArrayUtils.add(biomes, Biomes.PLAINS);
-    	biomes = ArrayUtils.add(biomes, Biomes.DESERT);
-    	biomes = ArrayUtils.add(biomes, Biomes.EXTREME_HILLS);
-    	biomes = ArrayUtils.add(biomes, Biomes.FOREST);
-    	biomes = ArrayUtils.add(biomes, Biomes.TAIGA);
-    	biomes = ArrayUtils.add(biomes, Biomes.SWAMPLAND);
-    	biomes = ArrayUtils.add(biomes, Biomes.HELL);
-    	biomes = ArrayUtils.add(biomes, Biomes.FROZEN_OCEAN);
-    	biomes = ArrayUtils.add(biomes, Biomes.ICE_PLAINS);
-    	biomes = ArrayUtils.add(biomes, Biomes.ICE_MOUNTAINS);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUSHROOM_ISLAND);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUSHROOM_ISLAND_SHORE);
-    	biomes = ArrayUtils.add(biomes, Biomes.BEACH);
-    	biomes = ArrayUtils.add(biomes, Biomes.DESERT_HILLS);
-    	biomes = ArrayUtils.add(biomes, Biomes.FOREST_HILLS);
-    	biomes = ArrayUtils.add(biomes, Biomes.TAIGA_HILLS);
-    	biomes = ArrayUtils.add(biomes, Biomes.EXTREME_HILLS_EDGE);
-    	biomes = ArrayUtils.add(biomes, Biomes.JUNGLE);
-    	biomes = ArrayUtils.add(biomes, Biomes.JUNGLE_HILLS);
-    	biomes = ArrayUtils.add(biomes, Biomes.JUNGLE_EDGE);
-    	biomes = ArrayUtils.add(biomes, Biomes.STONE_BEACH);
-    	biomes = ArrayUtils.add(biomes, Biomes.COLD_BEACH);
-    	biomes = ArrayUtils.add(biomes, Biomes.BIRCH_FOREST);
-    	biomes = ArrayUtils.add(biomes, Biomes.BIRCH_FOREST_HILLS);
-    	biomes = ArrayUtils.add(biomes, Biomes.ROOFED_FOREST);
-    	biomes = ArrayUtils.add(biomes, Biomes.COLD_TAIGA);
-    	biomes = ArrayUtils.add(biomes, Biomes.COLD_TAIGA_HILLS);
-    	biomes = ArrayUtils.add(biomes, Biomes.REDWOOD_TAIGA);
-    	biomes = ArrayUtils.add(biomes, Biomes.REDWOOD_TAIGA_HILLS);
-    	biomes = ArrayUtils.add(biomes, Biomes.EXTREME_HILLS_WITH_TREES);
-    	biomes = ArrayUtils.add(biomes, Biomes.SAVANNA);
-    	biomes = ArrayUtils.add(biomes, Biomes.SAVANNA_PLATEAU);
-    	biomes = ArrayUtils.add(biomes, Biomes.MESA);
-    	biomes = ArrayUtils.add(biomes, Biomes.MESA_ROCK);
-    	biomes = ArrayUtils.add(biomes, Biomes.MESA_CLEAR_ROCK);
-    	biomes = ArrayUtils.add(biomes, Biomes.VOID);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_PLAINS);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_DESERT);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_EXTREME_HILLS);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_FOREST);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_TAIGA);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_SWAMPLAND);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_ICE_FLATS);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_JUNGLE);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_JUNGLE_EDGE);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_BIRCH_FOREST); 
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_BIRCH_FOREST_HILLS); 
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_ROOFED_FOREST);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_TAIGA_COLD);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_REDWOOD_TAIGA);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_REDWOOD_TAIGA_HILLS);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_EXTREME_HILLS_WITH_TREES);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_SAVANNA);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_SAVANNA_ROCK);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_MESA);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_MESA_ROCK);
-    	biomes = ArrayUtils.add(biomes, Biomes.MUTATED_MESA_CLEAR_ROCK); 
-    	
-//    	System.out.println("biome cnt:"+ biomes.length);
-    	
-    	EntityRegistry.addSpawn(EntityPlayerRaider.class, PMSettings.daySpawnWeight, 1, PMSettings.dayMaxGroupSpawn, EnumCreatureType.CREATURE, biomes);
-    	
-    	EntityRegistry.addSpawn(EntityPlayerRaider.class, PMSettings.NightSpawnWeight, 1, PMSettings.nightMaxGroupSpawn, EnumCreatureType.MONSTER, biomes);
-    	
-
+    	DungeonHooks.addDungeonMob(MODID +".Raiders", PMSettings.raidersSpawnerWeight); 
+        	
+    	if(PMSettings.removeVanillaSpawners)
+    	{
+    		logger.info("Removeing Vanilla Spawners from Dungeon Hooks");
+    		if(DungeonHooks.removeDungeonMob("Spider") == 0) logger.error("Tried to remove Spider from Mob Spawner. It didn't exist.");
+    		if(DungeonHooks.removeDungeonMob("Skeleton") == 0) logger.error("Tried to remove Skeleton from Mob Spawner. It didn't exist.");
+    		if(DungeonHooks.removeDungeonMob("Creeper") == 0) logger.error("Tried to remove Creeper from Mob Spawner. It didn't exist.");
+    		if(DungeonHooks.removeDungeonMob("Zombie") == 0) logger.error("Tried to remove Zombie from Mob Spawner. It didn't exist.");
+    		if(DungeonHooks.removeDungeonMob("Enderman") == 0) logger.error("Treid to remove Enderman from Mob Spawner. It didn't exist.");
+    	}
     }
     
     
@@ -148,8 +115,11 @@ public class RaidersCore
 	{
         if (RaidersCore.proxy.isIntergratedServerRunning())
         {	
-        	EntityPlayerRaider.setProfileCache(event.getServer().getPlayerProfileCache());
-        	EntityPlayerRaider.setSessionService(event.getServer().getMinecraftSessionService());
+//        	EntityPlayerRaider.setProfileCache(event.getServer().getPlayerProfileCache());
+//        	EntityPlayerRaider.setSessionService(event.getServer().getMinecraftSessionService());
+        	
+        	RaidersSkinManager.profileCache = event.getServer().getPlayerProfileCache();
+        	RaidersSkinManager.sessionService = event.getServer().getMinecraftSessionService();
         }
         
 		ICommandManager command = event.getServer().getCommandManager();

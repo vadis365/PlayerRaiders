@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.util.ResourceLocation;
 
 import com.gendeathrow.pmobs.core.RaidersCore;
@@ -23,7 +25,13 @@ public enum LayerFeatures
     RUSSIAN(9, new ResourceLocation(RaidersCore.MODID ,"textures/entity/martialArtist.png")),
     ZOMBIE1(7, new ResourceLocation(RaidersCore.MODID ,"textures/entity/detail1.png")),
     ZOMBIE2(8, new ResourceLocation(RaidersCore.MODID ,"textures/entity/detail2.png")),
-    ZOMBIE3(9, new ResourceLocation(RaidersCore.MODID ,"textures/entity/detail3.png"));
+    ZOMBIE3(9, new ResourceLocation(RaidersCore.MODID ,"textures/entity/detail3.png")),
+    POLICE(10, new ResourceLocation(RaidersCore.MODID ,"textures/entity/police.png")),
+    MILITARY1(11, new ResourceLocation(RaidersCore.MODID ,"textures/entity/military1.png")),
+    MILITARY2(12, new ResourceLocation(RaidersCore.MODID ,"textures/entity/military2.png")),
+    WWII(13, new ResourceLocation(RaidersCore.MODID ,"textures/entity/wwii.png")),
+    DOCTOR(14, new ResourceLocation(RaidersCore.MODID ,"textures/entity/doctor.png")),
+    NAVYCAPTAIN(15, new ResourceLocation(RaidersCore.MODID ,"textures/entity/navycaptian.png"));
     
    
     
@@ -42,5 +50,15 @@ public enum LayerFeatures
     public static LayerFeatures randomFeature(Random rand)  
     {
         return VALUES.get(rand.nextInt(SIZE));
+    }
+    
+    @Nullable
+    public static LayerFeatures getFeature(int ordinal)
+    {
+    	for(LayerFeatures feature : VALUES)
+    	{
+    		if(feature.ordinal() == ordinal) return feature;
+    	}
+		return null;
     }
 }
