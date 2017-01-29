@@ -101,11 +101,11 @@ public class EntityRaiderRenderer extends RenderBiped<EntityRaiderBase>
 	    @Override
 	    protected void preRenderCallback(EntityRaiderBase entitylivingbaseIn, float partialTickTime)
 	    {
-	        super.preRenderCallback(entitylivingbaseIn, partialTickTime);
+	      //  super.preRenderCallback(entitylivingbaseIn, partialTickTime);
 
 	    	System.out.println("c");
 	    	
-            GlStateManager.scale(10.5F, 10.5F, 10.5F);
+           // GlStateManager.scale(10.5F, 10.5F, 10.5F);
             
 	        if (entitylivingbaseIn.getRaiderRole() == EnumRaiderRole.BRUTE)
 	        {
