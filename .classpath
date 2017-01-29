@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry kind="lib" path="C:/Users/Paul/.gradle/caches/minecraft/net/minecraftforge/forge/1.10.2-12.18.1.2095/snapshot/20160518/forgeSrc-1.10.2-12.18.1.2095.jar" sourcepath="C:/Users/Paul/.gradle/caches/minecraft/net/minecraftforge/forge/1.10.2-12.18.1.2095/snapshot/20160518/forgeSrc-1.10.2-12.18.1.2095-sources.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/Paul/.gradle/caches/modules-2/files-2.1/com.mojang/authlib/1.5.22/afaa8f6df976fcb5520e76ef1d5798c9e6b5c0b2/authlib-1.5.22.jar" sourcepath="C:/Users/Paul/.gradle/caches/modules-2/files-2.1/com.mojang/authlib/1.5.22/c5eb40c6aaa812cc015fea27cf4db7efea24b898/authlib-1.5.22-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Paul/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/18.0/cce0823396aa693798f8882e64213b1772032b09/guava-18.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Paul/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.0-beta9/1dd66e68cccd907880229f9e2de1314bd13ff785/log4j-api-2.0-beta9.jar" sourcepath="C:/Users/Paul/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.0-beta9/c6682b8a47ddd9f29108838aed0dc8e0ffdedf68/log4j-api-2.0-beta9-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Paul/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.4/b1b6ea3b7e4aa4f492509a4952029cd8e48019ad/commons-io-2.4.jar" sourcepath="C:/Users/Paul/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.4/f2d8698c46d1167ff24b06a840a87d91a02db891/commons-io-2.4-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Paul/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar" sourcepath="C:/Users/Paul/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a6dc5db8a12928e583bd3f23e72d3ab611ecd58f/gson-2.2.4-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Paul/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.3.2/90a3822c38ec8c996e84c16a3477ef632cbc87a3/commons-lang3-3.3.2.jar" sourcepath="C:/Users/Paul/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.3.2/d2a489573c0ed2c4942b3660decad5d65087b406/commons-lang3-3.3.2-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Paul/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.1/f7be08ec23c21485b9b5a1cf1654c2ec8c58168d/jsr305-3.0.1.jar" sourcepath="C:/Users/Paul/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.1/a2926c057ca3b662b9db194c869bdbe7d3bb8aef/jsr305-3.0.1-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Paul/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl/2.9.1/f58c5aabcef0e41718a564be9f8e412fff8db847/lwjgl-2.9.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

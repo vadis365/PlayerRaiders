@@ -1,7 +1,5 @@
 package com.gendeathrow.pmobs.client;
 
-import java.lang.reflect.Field;
-
 import com.gendeathrow.pmobs.client.data.KillCounter;
 
 import net.minecraft.client.Minecraft;
