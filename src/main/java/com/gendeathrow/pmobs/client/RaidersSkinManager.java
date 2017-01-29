@@ -6,15 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.DefaultPlayerSkin;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.management.PlayerProfileCache;
-import net.minecraft.tileentity.TileEntitySkull;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StringUtils;
 
 import com.gendeathrow.pmobs.core.RaidersCore;
 import com.gendeathrow.pmobs.entity.New.EntityRaiderBase;
@@ -26,6 +17,14 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.Property;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.DefaultPlayerSkin;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.management.PlayerProfileCache;
+import net.minecraft.tileentity.TileEntitySkull;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StringUtils;
 
 public class RaidersSkinManager 
 {
