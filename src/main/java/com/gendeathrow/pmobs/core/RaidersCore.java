@@ -1,6 +1,5 @@
 package com.gendeathrow.pmobs.core;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.entity.EnumCreatureType;
@@ -8,7 +7,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.DungeonHooks;
-import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -17,23 +15,28 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.gendeathrow.pmobs.client.RaidersSkinManager;
 import com.gendeathrow.pmobs.commands.common.CommonCommands;
 import com.gendeathrow.pmobs.common.SoundEvents;
+import com.gendeathrow.pmobs.core.network.RaiderDeathCntPacket;
 import com.gendeathrow.pmobs.core.proxies.CommonProxy;
+import com.gendeathrow.pmobs.entity.EntityDropPod;
 import com.gendeathrow.pmobs.entity.EntityPlayerRaider;
-import com.gendeathrow.pmobs.entity.New.EntityRaiderBase;
 
 @Mod(modid = RaidersCore.MODID, name=RaidersCore.NAME, version = RaidersCore.VERSION)
 public class RaidersCore
 {
     public static final String MODID = "playerraiders";
     public static final String NAME = "Player Raiders";
-    public static final String VERSION = "1.2.14.29";
+    public static final String VERSION = "1.2.14.49";
+    public static final String CHANNELNAME = "genraiders";
     
 	@Instance(MODID)
 	public static RaidersCore instance;
@@ -44,23 +47,34 @@ public class RaidersCore
 	    
 	@SidedProxy(clientSide = PROXY + ".ClientProxy", serverSide = PROXY + ".CommonProxy")
 	public static CommonProxy proxy;
+	
+	public static SimpleNetworkWrapper network;
 
+    public static ResourceLocation playerraidersloot = new ResourceLocation(MODID, "entities/playerraiders");
+    
+    //public static final EnumCreatureType HostileWaterMobs = EnumHelper.addCreatureType("hostileWaterMob", EntityWaterRaider.class, 20, Material.WATER, false, false);
+    
+ 
+    
     @EventHandler
     public void preinit(FMLPreInitializationEvent event)
     {
 		logger = event.getModLog();
 		
     	EntityRegistry.registerModEntity(EntityPlayerRaider.class, "Raiders", 1, this, 80, 3, true, -3971048, -6191748);
-     	
+    	
+    	EntityRegistry.registerModEntity(EntityDropPod.class, "DropPod", 2, this, 80, 3, true, -2971048, -2191748);
+    	
      	ConfigHandler.preInit();
+     	
+       	RaidersCore.network = NetworkRegistry.INSTANCE.newSimpleChannel(RaidersCore.CHANNELNAME);
+       	
+       	network.registerMessage(RaiderDeathCntPacket.ClientHandler.class, RaiderDeathCntPacket.class, 0, Side.CLIENT);
     	
     	proxy.preInit(event);
      }
     
-    public static ResourceLocation playerraidersloot = new ResourceLocation(MODID, "entities/playerraiders");
-    
-    public static final EnumCreatureType RaidersDayTime = EnumHelper.addCreatureType("raiderDayTime", EntityRaiderBase.class, 30, Material.GROUND, false, false);
-    
+   
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
@@ -82,11 +96,14 @@ public class RaidersCore
     	}
        	
     	RaidersCore.logger.info("Added "+ biomes.length +" biomes to Raiders spawn list.");
-    
-    	EntityRegistry.addSpawn(EntityPlayerRaider.class, PMSettings.NightSpawnWeight, 1, PMSettings.nightMaxGroupSpawn,EnumCreatureType.MONSTER, biomes);
-    	
-    	
 
+    	//EntityRegistry.addSpawn(EntityWaterRaider.class, PMSettings.NightSpawnWeight, 1, 1, EnumCreatureType.MONSTER, biomes);
+    	EntityRegistry.addSpawn(EntityPlayerRaider.class, PMSettings.raidersSpawnWeight, 1, PMSettings.raidersMaxGroupSpawn,EnumCreatureType.MONSTER, biomes);
+
+    	//EntitySpawnPlacementRegistry.setPlacementType(EntityPlayerRaider.class, SpawnPlacementType.ON_GROUND);
+    	//EntitySpawnPlacementRegistry.setPlacementType(EntityWaterRaider.class, SpawnPlacementType.IN_WATER);
+    	
+    	
     }
     
     @EventHandler

@@ -9,6 +9,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.EnumHelper;
 
 import com.gendeathrow.pmobs.entity.New.EntityRaiderBase;
@@ -37,8 +39,6 @@ public class RaiderModel extends ModelBiped
 	{
 		 super(modelSize, 0.0F, 64, 64);
 		 
-//		 this.bipedDeadmau5Head = new ModelRenderer(this, 24, 0);
-//		 this.bipedDeadmau5Head.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1, modelSize);
 //		 this.bipedCape = new ModelRenderer(this, 0, 0);
 //		 this.bipedCape.setTextureSize(64, 32);
 //		 this.bipedCape.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1, modelSize);
@@ -75,7 +75,7 @@ public class RaiderModel extends ModelBiped
     {
         this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
         
-//        GlStateManager.pushMatrix();
+        GlStateManager.pushMatrix();
 
         if (this.isChild)
         {
@@ -136,7 +136,7 @@ public class RaiderModel extends ModelBiped
             this.bipedHeadwear.render(scale);
         }
 
- //       GlStateManager.popMatrix();
+        GlStateManager.popMatrix();
     }
 
     public void renderCape(float scale)
@@ -164,10 +164,33 @@ public class RaiderModel extends ModelBiped
 			}
 		}
 		
+		if (mainHand != null && ((EntityRaiderBase)entitylivingbaseIn).getRaiderRole() == EnumRaiderRole.BRUTE && ((EntityRangedAttacker)entitylivingbaseIn).isSwingingArms())
+		{
+			if (entitylivingbaseIn.getPrimaryHand() == EnumHandSide.RIGHT)
+			{
+				this.rightArmPose = ModelBiped.ArmPose.BOW_AND_ARROW;
+			}
+			else
+			{
+				this.leftArmPose = ModelBiped.ArmPose.BOW_AND_ARROW;
+			}
+		}
+		
 		if(offHand != null && offHand.getItem() == Items.SKULL)
 		{
 			this.leftArmPose = HoldingSkull;
 		}
+		
+    	if (((EntityRaiderBase)entitylivingbaseIn).getRaiderRole() == EnumRaiderRole.WITCH && ((EntityRaiderBase)entitylivingbaseIn).isArmsRaised())
+        {
+			this.rightArmPose = ModelBiped.ArmPose.BOW_AND_ARROW;
+			this.leftArmPose = ModelBiped.ArmPose.BOW_AND_ARROW;
+			
+			for (int i = 0; i < 10; ++i)
+			{
+				entitylivingbaseIn.worldObj.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, entitylivingbaseIn.posX + (entitylivingbaseIn.getRNG().nextDouble() - 0.5D) * (double)entitylivingbaseIn.width, entitylivingbaseIn.posY + entitylivingbaseIn.getRNG().nextDouble() * (double)entitylivingbaseIn.height - 0.25D, entitylivingbaseIn.posZ + (entitylivingbaseIn.getRNG().nextDouble() - 0.5D) * (double)entitylivingbaseIn.width, (entitylivingbaseIn.getRNG().nextDouble() - 0.5D) * 2.0D, -entitylivingbaseIn.getRNG().nextDouble(), (entitylivingbaseIn.getRNG().nextDouble() - 0.5D) * 2.0D, new int[0]);
+			}
+        }
 		
 		super.setLivingAnimations(entitylivingbaseIn, p_78086_2_, p_78086_3_, partialTickTime);
 	}
@@ -176,6 +199,13 @@ public class RaiderModel extends ModelBiped
 	@Override
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
     {
+		boolean witchActive = entityIn instanceof EntityRangedAttacker && ((EntityRangedAttacker) entityIn).isWitchActive();
+        
+		if (!witchActive && ((EntityRaiderBase) entityIn).getRaiderRole() == EnumRaiderRole.WITCH)
+        {
+			 GlStateManager.translate(0.0F, 0.25F, 0.0F);
+        }
+		
     	super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
 
 //        if (entityIn.isSneaking())
@@ -186,6 +216,22 @@ public class RaiderModel extends ModelBiped
 //        {
 //            this.bipedCape.rotationPointY = 0.0F;
 //        }
+    	
+        if (!witchActive && ((EntityRaiderBase) entityIn).getRaiderRole() == EnumRaiderRole.WITCH)
+        {
+            this.bipedRightArm.rotateAngleX += -((float)Math.PI / 5F);
+            this.bipedLeftArm.rotateAngleX += -((float)Math.PI / 5F);
+            this.bipedRightLeg.rotateAngleX = -1.4137167F;
+            this.bipedRightLeg.rotateAngleY = ((float)Math.PI / 10F);
+            this.bipedRightLeg.rotateAngleZ = 0.07853982F;
+            this.bipedLeftLeg.rotateAngleX = -1.4137167F;
+            this.bipedLeftLeg.rotateAngleY = -((float)Math.PI / 10F);
+            this.bipedLeftLeg.rotateAngleZ = -0.07853982F;
+            
+           // this.bipedBody.rotateAngleX += MathHelper.sin(ageInTicks * (float)Math.PI) * 5.0F;
+           // this.bipedBody.rotateAngleY -= MathHelper.sin(ageInTicks * 0.067F) * 5.0F;
+        }
+        
         
     	if (this.leftArmPose == HoldingSkull)
         {
@@ -207,6 +253,7 @@ public class RaiderModel extends ModelBiped
         	this.bipedRightArm.rotateAngleZ -= 1.25;
 
         }
+    	
     	
     	//copyModelAngles(this.bipedHead, this.bipedHeadwear);
 //    	copyModelAngles(this.bipedLeftLeg, this.bipedLeftLegwear);

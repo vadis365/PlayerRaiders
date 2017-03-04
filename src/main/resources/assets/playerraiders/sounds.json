@@ -59,11 +59,45 @@
 			}
 		]
 	},
+	"mob.raiders.brutelaugh" : {
+		"category":"hostile",
+		"sounds" : [
+			{
+				"name" : "playerraiders:mob/raiders/brute_laugh-01",
+				"pitch" : 1
+			},
+			{
+				"name" : "playerraiders:mob/raiders/brute_laugh-02",
+				"pitch" : 1
+			},
+			{
+				"name" : "playerraiders:mob/raiders/brute_laugh-03",
+				"pitch" : 1
+			}
+		]
+	},
 	"mob.raiders.scream" : {
 		"category":"hostile",
 		"sounds" : [
 			{
 				"name" : "playerraiders:mob/raiders/scream"
+			}
+		]
+	},
+	"mob.raiders.screamerscream" : {
+		"category":"hostile",
+		"sounds" : [
+			{
+				"name" : "playerraiders:mob/raiders/screamer_scream"
+			}
+		]
+	},
+	"mob.raiders.screamercry" : {
+		"category":"hostile",
+		"sounds" : [
+			{
+				"name" : "playerraiders:mob/raiders/screamer_cry",
+				"stream": true
 			}
 		]
 	}
