@@ -4,13 +4,6 @@ package com.gendeathrow.pmobs.client.renderer;
 
 import java.util.HashMap;
 
-import com.gendeathrow.pmobs.client.model.renderer.RaiderModel;
-import com.gendeathrow.pmobs.client.model.renderer.layers.LayerFeatureRenderer;
-import com.gendeathrow.pmobs.core.PMSettings;
-import com.gendeathrow.pmobs.entity.EntityPlayerRaider;
-import com.gendeathrow.pmobs.entity.New.EntityRaiderBase;
-import com.gendeathrow.pmobs.entity.New.EntityRaiderBase.EnumRaiderRole;
-
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
@@ -20,11 +13,17 @@ import net.minecraft.client.renderer.entity.layers.LayerArrow;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.resources.DefaultPlayerSkin;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.gendeathrow.pmobs.client.model.renderer.RaiderModel;
+import com.gendeathrow.pmobs.client.model.renderer.layers.LayerFeatureRenderer;
+import com.gendeathrow.pmobs.core.PMSettings;
+import com.gendeathrow.pmobs.entity.EntityPlayerRaider;
+import com.gendeathrow.pmobs.entity.New.EntityRaiderBase;
+import com.gendeathrow.pmobs.entity.New.EntityRaiderBase.EnumRaiderRole;
 
 @SideOnly(Side.CLIENT)
 public class EntityRaiderRenderer extends RenderBiped<EntityRaiderBase> 
@@ -99,7 +98,7 @@ public class EntityRaiderRenderer extends RenderBiped<EntityRaiderBase>
 	     * Allows the render to do state modifications necessary before the model is rendered.
 	     */
 	    @Override
-	    protected void preRenderCallback(EntityRaiderBase entitylivingbaseIn, float partialTickTime)
+	    protected void preRenderCallback(Entity entitylivingbaseIn, float partialTickTime)
 	    {
 	        super.preRenderCallback(entitylivingbaseIn, partialTickTime);
 
